@@ -5,7 +5,7 @@ function productCardTemplate(product) {
     return `<li class="product-card">
     <a href="product_pages/index.html?product=${product.Id}">
     <img
-        src="${product.Image}"
+        src="${product.Image.replace('../', '')}"
         alt="Image of ${product.Name}"
     />
     <h3 class="card__brand">${product.Brand.Name}</h3>
@@ -22,13 +22,12 @@ export default async function productList(selector, category) {
     const products = await getData(category);
 
     // render out the product list to the element
-    renderList(products, element);
-
+    renderList(products, element, productCardTemplate);
 }
-function renderList(productList, element) {
-    const html = productList.map(productCardTemplate).join("");
+
+// Reusable renderList
+function renderList(productList, element, templateFn) {
+    const html = productList.map(templateFn).join("");
     element.innerHTML = html;
-}
+};
 
-
-    
